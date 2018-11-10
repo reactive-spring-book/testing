@@ -1,4 +1,4 @@
-package com.example.producer;
+package rsb.testing.producer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,6 +8,8 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+import rsb.testing.producer.Customer;
+import rsb.testing.producer.CustomerRepository;
 
 @DataMongoTest
 @RunWith(SpringRunner.class)

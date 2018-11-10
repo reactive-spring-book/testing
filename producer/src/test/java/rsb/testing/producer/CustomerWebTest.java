@@ -1,4 +1,4 @@
-package com.example.producer;
+package rsb.testing.producer;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import rsb.testing.producer.Customer;
+import rsb.testing.producer.CustomerRepository;
+import rsb.testing.producer.CustomerWebConfiguration;
 
 @WebFluxTest
 @Import(CustomerWebConfiguration.class)

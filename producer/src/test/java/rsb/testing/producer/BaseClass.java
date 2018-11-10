@@ -1,4 +1,4 @@
-package com.example.producer;
+package rsb.testing.producer;
 
 import io.restassured.RestAssured;
 import org.junit.Before;
@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
+import rsb.testing.producer.Customer;
+import rsb.testing.producer.CustomerRepository;
+import rsb.testing.producer.ProducerApplication;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "server.port=0")

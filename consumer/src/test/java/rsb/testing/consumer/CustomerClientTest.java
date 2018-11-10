@@ -1,4 +1,4 @@
-package com.example.consumer;
+package rsb.testing.consumer;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
 import org.junit.Test;
@@ -13,6 +13,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+import rsb.testing.consumer.ConsumerApplication;
+import rsb.testing.consumer.Customer;
+import rsb.testing.consumer.CustomerClient;
 
 /**
  * @author <a href="mailto:josh@joshlong.com">Josh Long</a>

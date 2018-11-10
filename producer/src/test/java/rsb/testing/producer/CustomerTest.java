@@ -1,7 +1,8 @@
-package com.example.producer;
+package rsb.testing.producer;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import rsb.testing.producer.Customer;
 
 public class CustomerTest {
 

@@ -74,7 +74,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <baseClassForTests>
-                        com.example.producer.BaseClass
+                        rsb.testing.producer.BaseClass
                     </baseClassForTests>
                     <testMode>EXPLICIT</testMode>
                 </configuration>
