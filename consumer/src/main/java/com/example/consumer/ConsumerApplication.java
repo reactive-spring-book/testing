@@ -14,38 +14,40 @@ import reactor.core.publisher.Flux;
 @SpringBootApplication
 public class ConsumerApplication {
 
-		@Bean
-		WebClient client() {
-				return WebClient.builder().build();
-		}
+	@Bean
+	WebClient client() {
+		return WebClient.builder().build();
+	}
 
-		public static void main(String[] args) {
-				SpringApplication.run(ConsumerApplication.class, args);
-		}
+	public static void main(String[] args) {
+		SpringApplication.run(ConsumerApplication.class, args);
+	}
+
 }
 
 @Component
 class CustomerClient {
 
-		private final WebClient webClient;
+	private final WebClient webClient;
 
-		CustomerClient(WebClient webClient) {
-				this.webClient = webClient;
-		}
+	CustomerClient(WebClient webClient) {
+		this.webClient = webClient;
+	}
 
-		Flux<Customer> getAllCustomers() {
-				return this.webClient
-					.get()
-					.uri("http://localhost:8080/customers")
-					.retrieve()
-					.bodyToFlux(Customer.class);
-		}
+	Flux<Customer> getAllCustomers() {
+		return this.webClient.get().uri("http://localhost:8080/customers").retrieve()
+				.bodyToFlux(Customer.class);
+	}
+
 }
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 class Customer {
-		private String id;
-		private String name;
+
+	private String id;
+
+	private String name;
+
 }

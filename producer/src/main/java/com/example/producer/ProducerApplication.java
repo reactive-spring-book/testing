@@ -23,30 +23,27 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @SpringBootApplication
 public class ProducerApplication {
 
-		public static void main(String[] args) {
-				SpringApplication.run(ProducerApplication.class, args);
-		}
+	public static void main(String[] args) {
+		SpringApplication.run(ProducerApplication.class, args);
+	}
+
 }
 
 @Configuration
 class CustomerWebConfiguration {
 
-		@Bean
-		RouterFunction<ServerResponse> routes(CustomerRepository cr) {
-				return route(GET("/customers"), r -> ServerResponse.ok().body(cr.findAll(), Customer.class));
-		}
+	@Bean
+	RouterFunction<ServerResponse> routes(CustomerRepository cr) {
+		return route(GET("/customers"),
+				r -> ServerResponse.ok().body(cr.findAll(), Customer.class));
+	}
 
-//		@Bean
-		ApplicationRunner runner(CustomerRepository cr) {
-				return args -> cr
-					.saveAll(Flux.just(new Customer(UUID.randomUUID().toString(), "Jane"), new Customer(UUID.randomUUID().toString(), "John")))
-					.subscribe(d -> System.out.println("saved " + d.toString()));
-		}
 }
 
 interface CustomerRepository extends ReactiveMongoRepository<Customer, String> {
 
-		Flux<Customer> findByName(String name);
+	Flux<Customer> findByName(String name);
+
 }
 
 @Document
@@ -55,7 +52,9 @@ interface CustomerRepository extends ReactiveMongoRepository<Customer, String> {
 @NoArgsConstructor
 class Customer {
 
-		@Id
-		private String id;
-		private String name;
+	@Id
+	private String id;
+
+	private String name;
+
 }

@@ -15,43 +15,34 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
-	* @author <a href="mailto:josh@joshlong.com">Josh Long</a>
-	*/
+ * @author <a href="mailto:josh@joshlong.com">Josh Long</a>
+ */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RunWith(SpringRunner.class)
 @Import(ConsumerApplication.class)
-//@org.springframework.cloud.contract.wiremock.AutoConfigureWireMock(port = 8080)
-@AutoConfigureStubRunner(ids = "com.example:producer:+:8080",
-	stubsMode = StubRunnerProperties.StubsMode.LOCAL)
+// @org.springframework.cloud.contract.wiremock.AutoConfigureWireMock(port = 8080)
+@AutoConfigureStubRunner(ids = "rsb:producer:+:8080", stubsMode = StubRunnerProperties.StubsMode.LOCAL)
 public class CustomerClientTest {
 
-		@Autowired
-		private CustomerClient client;
+	@Autowired
+	private CustomerClient client;
 
-		//		@Before
-		public void setupWireMock() throws Exception {
+	// @Before
+	public void setupWireMock() throws Exception {
 
-				WireMock.stubFor(
-					WireMock
-						.get("/customers")
-						.willReturn(
-							WireMock
-								.aResponse()
-								.withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
-								.withBody("[{ \"id\":\"1\", \"name\":\"Jane\"},{ \"id\":\"2\", \"name\":\"John\"}]")
-						)
-				);
+		WireMock.stubFor(WireMock.get("/customers").willReturn(WireMock.aResponse()
+				.withHeader(HttpHeaders.CONTENT_TYPE,
+						MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.withBody(
+						"[{ \"id\":\"1\", \"name\":\"Jane\"},{ \"id\":\"2\", \"name\":\"John\"}]")));
 
-		}
+	}
 
-		@Test
-		public void getAllCustomers() {
-				Flux<Customer> customers = this.client.getAllCustomers();
-				StepVerifier
-					.create(customers)
-					.expectNext(new Customer("1", "Jane"))
-					.expectNext(new Customer("2", "John"))
-					.verifyComplete();
-		}
+	@Test
+	public void getAllCustomers() {
+		Flux<Customer> customers = this.client.getAllCustomers();
+		StepVerifier.create(customers).expectNext(new Customer("1", "Jane"))
+				.expectNext(new Customer("2", "John")).verifyComplete();
+	}
 
 }
