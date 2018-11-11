@@ -11,33 +11,31 @@ import reactor.test.StepVerifier;
 
 import java.util.function.Predicate;
 
-@DataMongoTest
-@RunWith(SpringRunner.class)
+@RunWith(SpringRunner.class) // <1>
+@DataMongoTest // <2>
 public class CustomerRepositoryTest {
 
-	private String commonName = "Jane";
-
-	private final Customer one = new Customer("1", this.commonName);
-
-	private final Customer two = new Customer("2", "John");
-
-	private final Customer three = new Customer("3", this.commonName);
-
+	// <3>
 	@Autowired
 	private CustomerRepository customerRepository;
 
+	// <4>
 	@Test
 	public void findByName() {
+		String commonName = "Jane";
+		Customer one = new Customer("1", commonName);
+		Customer two = new Customer("2", "John");
+		Customer three = new Customer("3", commonName);
+
 		Publisher<Customer> setup = this.customerRepository //
 				.deleteAll() //
-				.thenMany(this.customerRepository
-						.saveAll(Flux.just(this.one, this.two, this.three))) //
-				.thenMany(this.customerRepository.findByName(this.commonName));
+				.thenMany(this.customerRepository.saveAll(Flux.just(one, two, three))) //
+				.thenMany(this.customerRepository.findByName(commonName));
 
-		Predicate<Customer> customerPredicate = customer -> this.commonName
-				.equalsIgnoreCase(customer.getName());
+		Predicate<Customer> customerPredicate = customer -> // <5>
+		commonName.equalsIgnoreCase(customer.getName());
 
-		StepVerifier //
+		StepVerifier // <6>
 				.create(setup) //
 				.expectNextMatches(customerPredicate) //
 				.expectNextMatches(customerPredicate) //
