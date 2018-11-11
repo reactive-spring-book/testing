@@ -8,7 +8,7 @@ cache:
   - $HOME/.m2/repository/
 
 script:
--  mvn -e verify deploy
+-  mvn -e deploy
 
 env:
 - SPRING_PROFILES_ACTIVE=ci
