@@ -14,8 +14,11 @@ class CustomerClient {
 	}
 
 	Flux<Customer> getAllCustomers() {
-		return this.webClient.get().uri("http://localhost:8080/customers").retrieve()
-				.bodyToFlux(Customer.class);
+		return this.webClient // <1>
+				.get() // <2>
+				.uri("http://localhost:8080/customers") // <3>
+				.retrieve() // <4>
+				.bodyToFlux(Customer.class); // <5>
 	}
 
 }
