@@ -7,14 +7,15 @@ import org.springframework.web.reactive.function.server.ServerResponse;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Configuration
 class CustomerWebConfiguration {
 
-	@Bean
-	RouterFunction<ServerResponse> routes(CustomerRepository cr) {
-		return route(GET("/customers"),
-				r -> ServerResponse.ok().body(cr.findAll(), Customer.class));
+	@Bean // <1>
+	RouterFunction<ServerResponse> routes(CustomerRepository customerRepository) {
+		return route(GET("/customers"), // <2>
+				request -> ok().body(customerRepository.findAll(), Customer.class));
 	}
 
 }
