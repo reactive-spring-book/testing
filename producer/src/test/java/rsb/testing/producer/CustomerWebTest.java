@@ -28,17 +28,19 @@ public class CustomerWebTest {
 
 		// <5>
 		Mockito.when(this.repository.findAll())
-				.thenReturn(Flux.just(new Customer("1", "A"), new Customer("2", "B")));
+			.thenReturn(Flux.just(new Customer("1", "A"), new Customer("2", "B")));
 
 		// <6>
 		this.client.get() //
-				.uri("/customers") //
-				.accept(MediaType.APPLICATION_JSON_UTF8).exchange() //
-				.expectStatus().isOk().expectHeader()
-				.contentType(MediaType.APPLICATION_JSON_UTF8) //
-				.expectBody() //
-				.jsonPath("$.[0].id").isEqualTo("1").jsonPath("$.[0].name").isEqualTo("A") //
-				.jsonPath("$.[1].id").isEqualTo("2").jsonPath("$.[1].name").isEqualTo("B") //
+			.uri("/customers") //
+			.accept(MediaType.APPLICATION_JSON_UTF8).exchange() //
+			.expectStatus().isOk().expectHeader()
+			.contentType(MediaType.APPLICATION_JSON_UTF8) //
+			.expectBody() //
+			.jsonPath("$.[0].id").isEqualTo("1") //
+			.jsonPath("$.[0].name").isEqualTo("A") //
+			.jsonPath("$.[1].id").isEqualTo("2")//
+			.jsonPath("$.[1].name").isEqualTo("B") //
 		;
 	}
 
