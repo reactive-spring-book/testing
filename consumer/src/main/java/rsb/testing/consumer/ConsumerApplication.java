@@ -8,11 +8,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @SpringBootApplication
 public class ConsumerApplication {
 
-	@Bean
-	WebClient client() {
-		return WebClient.builder().build();
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(ConsumerApplication.class, args);
 	}
