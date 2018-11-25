@@ -2,11 +2,14 @@ import org.springframework.cloud.contract.spec.Contract
 import org.springframework.cloud.contract.spec.internal.HttpMethods
 
 Contract.make {
+    // <1>
     request {
         method HttpMethods.HttpMethod.GET
         url "/customers"
     }
+    // <2>
     response {
+        // <3>
         body(
         """
             [ 

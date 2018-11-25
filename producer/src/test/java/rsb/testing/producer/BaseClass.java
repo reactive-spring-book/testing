@@ -15,26 +15,32 @@ import rsb.testing.producer.Customer;
 import rsb.testing.producer.CustomerRepository;
 import rsb.testing.producer.ProducerApplication;
 
+// <1>
 @RunWith(SpringRunner.class)
+// <2>
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "server.port=0")
 public class BaseClass {
 
+	// <3>
 	@LocalServerPort
 	private int port;
 
+	// <4>
 	@MockBean
 	private CustomerRepository customerRepository;
 
 	@Before
 	public void before() throws Exception {
 
-		RestAssured.baseURI = "http://localhost:" + this.port;
-
+		// <5>
 		Mockito.when(this.customerRepository.findAll()).thenReturn(
 				Flux.just(new Customer("1", "Jane"), new Customer("2", "John")));
 
+		// <6>
+		RestAssured.baseURI = "http://localhost:" + this.port;
 	}
 
+	// <7>
 	@Configuration
 	@Import(ProducerApplication.class)
 	public static class TestConfiguration {
