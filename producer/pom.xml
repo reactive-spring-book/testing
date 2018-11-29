@@ -69,7 +69,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <!--tag::scc-maven-plugin[]-->
+            <!-- tag::scc-maven-plugin[] -->
             <plugin>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-contract-maven-plugin</artifactId>
@@ -84,7 +84,7 @@
                     <testMode>EXPLICIT</testMode>
                 </configuration>
             </plugin>
-            <!--end::scc-maven-plugin[]-->
+            <!-- end::scc-maven-plugin[] -->
         </plugins>
     </build>
 
