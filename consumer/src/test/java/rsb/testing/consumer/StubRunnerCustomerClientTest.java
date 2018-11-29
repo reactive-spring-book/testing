@@ -14,7 +14,8 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @RunWith(SpringRunner.class)
 @Import(ConsumerApplication.class)
-@AutoConfigureStubRunner(ids = "rsb:producer:+:8080", stubsMode = StubRunnerProperties.StubsMode.LOCAL)
+@AutoConfigureStubRunner(ids = "rsb:producer:+:8080", // <1>
+	stubsMode = StubRunnerProperties.StubsMode.LOCAL) // <2>
 public class StubRunnerCustomerClientTest {
 
 	@Autowired
@@ -23,8 +24,11 @@ public class StubRunnerCustomerClientTest {
 	@Test
 	public void getAllCustomers() {
 		Flux<Customer> customers = this.client.getAllCustomers();
-		StepVerifier.create(customers).expectNext(new Customer("1", "Jane"))
-				.expectNext(new Customer("2", "John")).verifyComplete();
+		StepVerifier //
+			.create(customers) //
+			.expectNext(new Customer("1", "Jane")) //
+			.expectNext(new Customer("2", "John")) //
+			.verifyComplete();
 	}
 
 }
