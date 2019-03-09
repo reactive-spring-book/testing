@@ -7,11 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
 import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest // (webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, )
 @RunWith(SpringRunner.class)
 @Import(ConsumerApplication.class)
 @AutoConfigureStubRunner(ids = "rsb:producer:+:8080", // <1>
@@ -21,8 +22,18 @@ public class StubRunnerCustomerClientTest {
 	@Autowired
 	private CustomerClient client;
 
+	@Autowired
+	private Environment environment;
+
 	@Test
 	public void getAllCustomers() {
+
+		if (false) {
+			String base = String.format("%s:%s", "localhost",
+					this.environment.getProperty("wiremock.server.port", Integer.class));
+			this.client.setBase(base);
+		}
+
 		Flux<Customer> customers = this.client.getAllCustomers();
 		StepVerifier //
 				.create(customers) //
