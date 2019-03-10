@@ -28,12 +28,6 @@ public class StubRunnerCustomerClientTest {
 	@Test
 	public void getAllCustomers() {
 
-		if (false) {
-			String base = String.format("%s:%s", "localhost",
-					this.environment.getProperty("wiremock.server.port", Integer.class));
-			this.client.setBase(base);
-		}
-
 		Flux<Customer> customers = this.client.getAllCustomers();
 		StepVerifier //
 				.create(customers) //
