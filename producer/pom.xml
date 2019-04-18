@@ -10,8 +10,21 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
+    <properties>
+        <spring-cloud-contract-maven-plugin.version>2.2.0.BUILD-SNAPSHOT
+        </spring-cloud-contract-maven-plugin.version>
+        <spring-web-test-client.version>3.2.0
+        </spring-web-test-client.version>
+    </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>spring-web-test-client</artifactId>
+            <version>${spring-web-test-client.version}</version>
+            <scope>test</scope>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
@@ -68,7 +81,8 @@
                         rsb.testing.producer.BaseClass
                     </baseClassForTests>
                     <!--2-->
-                    <testMode>EXPLICIT</testMode>
+                    <testMode>WEBTESTCLIENT</testMode>
+                    <!--                    <testMode>EXPLICIT</testMode>-->
                 </configuration>
             </plugin>
             <!-- end::scc-maven-plugin[] -->

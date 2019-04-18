@@ -1,19 +1,18 @@
 package rsb.testing.producer;
 
-import io.restassured.RestAssured;
+import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.reactive.function.server.RouterFunction;
 import reactor.core.publisher.Flux;
-import rsb.testing.producer.Customer;
-import rsb.testing.producer.CustomerRepository;
-import rsb.testing.producer.ProducerApplication;
 
 // <1>
 @RunWith(SpringRunner.class)
@@ -29,6 +28,9 @@ public class BaseClass {
 	@MockBean
 	private CustomerRepository customerRepository;
 
+	@Autowired
+	private RouterFunction<?>[] routerFunctions;
+
 	@Before
 	public void before() throws Exception {
 
@@ -37,7 +39,7 @@ public class BaseClass {
 				Flux.just(new Customer("1", "Jane"), new Customer("2", "John")));
 
 		// <6>
-		RestAssured.baseURI = "http://localhost:" + this.port;
+		RestAssuredWebTestClient.standaloneSetup(this.routerFunctions);
 	}
 
 	// <7>
@@ -46,5 +48,8 @@ public class BaseClass {
 	public static class TestConfiguration {
 
 	}
+
+	// RestAssuredWebTestClient.standaloneSetup(new ProducerController(personToCheck ->
+	// personToCheck.age >= 20));
 
 }

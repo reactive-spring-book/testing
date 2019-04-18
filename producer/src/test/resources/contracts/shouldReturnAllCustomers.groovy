@@ -6,6 +6,7 @@ Contract.make {
     request {
         method HttpMethods.HttpMethod.GET
         url "/customers"
+
     }
     // <2>
     response {
