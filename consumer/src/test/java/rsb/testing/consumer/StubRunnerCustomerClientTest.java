@@ -16,7 +16,7 @@ import reactor.test.StepVerifier;
 @RunWith(SpringRunner.class)
 @Import(ConsumerApplication.class)
 @AutoConfigureStubRunner(ids = "rsb:producer:+:8080", // <1>
-		stubsMode = StubRunnerProperties.StubsMode.LOCAL) // <2>
+		stubsMode = StubRunnerProperties.StubsMode.CLASSPATH) // <2>
 public class StubRunnerCustomerClientTest {
 
 	@Autowired
