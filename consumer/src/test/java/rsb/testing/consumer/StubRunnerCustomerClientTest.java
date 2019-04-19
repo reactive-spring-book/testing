@@ -32,7 +32,7 @@ public class StubRunnerCustomerClientTest {
 	private CustomerClient client;
 
 	@StubRunnerPort(StubRunnerCustomerClientTest.PRODUCER_ARTIFACT_ID)
-	private int portOfProducerService; //<3>
+	private int portOfProducerService; // <3>
 
 	@Test
 	public void getAllCustomers() {
