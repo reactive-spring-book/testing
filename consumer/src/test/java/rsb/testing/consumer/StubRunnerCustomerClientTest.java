@@ -20,15 +20,18 @@ import reactor.test.StepVerifier;
 @RunWith(SpringRunner.class)
 @Log4j2
 @DirtiesContext
-@AutoConfigureStubRunner(ids = "rsb:producer", // <1>
-		stubsMode = StubRunnerProperties.StubsMode.LOCAL // <1>
+@AutoConfigureStubRunner(//
+		ids = StubRunnerCustomerClientTest.PRODUCER_ARTIFACT_ID, // <1>
+		stubsMode = StubRunnerProperties.StubsMode.LOCAL // <2>
 )
 public class StubRunnerCustomerClientTest {
+
+	final static String PRODUCER_ARTIFACT_ID = "rsb:producer";
 
 	@Autowired
 	private CustomerClient client;
 
-	@StubRunnerPort("rsb:producer")
+	@StubRunnerPort(StubRunnerCustomerClientTest.PRODUCER_ARTIFACT_ID)
 	private int portOfProducerService;
 
 	@Test
