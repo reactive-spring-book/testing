@@ -13,16 +13,15 @@ import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
-@SpringBootTest(//
+@SpringBootTest( //
 		webEnvironment = SpringBootTest.WebEnvironment.MOCK, //
 		classes = ConsumerApplication.class //
 )
 @RunWith(SpringRunner.class)
 @Log4j2
 @DirtiesContext
-@AutoConfigureStubRunner(//
-		ids = "rsb:producer", // <1>
-		stubsMode = StubRunnerProperties.StubsMode.LOCAL // <2>
+@AutoConfigureStubRunner(ids = "rsb:producer", // <1>
+		stubsMode = StubRunnerProperties.StubsMode.LOCAL // <1>
 )
 public class StubRunnerCustomerClientTest {
 
