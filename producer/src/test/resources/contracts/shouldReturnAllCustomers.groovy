@@ -21,7 +21,7 @@ Contract.make {
         )
         status(200)
         headers {
-            contentType(applicationJsonUtf8())
+            contentType(applicationJson())
         }
     }
 }

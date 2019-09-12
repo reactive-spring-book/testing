@@ -33,9 +33,9 @@ public class CustomerWebTest {
 		// <6>
 		this.client.get() //
 				.uri("/customers") //
-				.accept(MediaType.APPLICATION_JSON_UTF8).exchange() //
+				.accept(MediaType.APPLICATION_JSON).exchange() //
 				.expectStatus().isOk().expectHeader()
-				.contentType(MediaType.APPLICATION_JSON_UTF8) //
+				.contentType(MediaType.APPLICATION_JSON) //
 				.expectBody() //
 				.jsonPath("$.[0].id").isEqualTo("1") //
 				.jsonPath("$.[0].name").isEqualTo("A") //
