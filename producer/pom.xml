@@ -11,18 +11,16 @@
         <relativePath>..</relativePath>
     </parent>
     <properties>
-         <spring-web-test-client.version>3.2.0
-        </spring-web-test-client.version>
+        <spring-web-test-client.version>3.2.0</spring-web-test-client.version>
     </properties>
-
     <dependencies>
-      <!--   <dependency>
+        <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>spring-web-test-client</artifactId>
             <version>${spring-web-test-client.version}</version>
             <scope>test</scope>
             <optional>true</optional>
-        </dependency> -->
+        </dependency>
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
