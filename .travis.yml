@@ -2,7 +2,6 @@ language: java
 
 jdk:
   - oraclejdk11  
-  # - oraclejdk11
   
 cache:
   directories:
@@ -13,4 +12,3 @@ script:
 
 env:
 - SPRING_PROFILES_ACTIVE=ci
-
