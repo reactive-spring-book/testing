@@ -40,8 +40,8 @@ public class CustomerRepositoryTest {
 				.deleteAll() //
 				.thenMany(this.customerRepository.saveAll(Flux.just(one, two, three))) //
 				.thenMany(this.customerRepository.findByName(commonName));
-		var customerPredicate = (Predicate<Customer>) customer -> commonName.equalsIgnoreCase(customer.name());// <5>
-		StepVerifier // <6>
+		var customerPredicate = (Predicate<Customer>) customer -> commonName.equalsIgnoreCase(customer.name());// <4>
+		StepVerifier // <5>
 				.create(setupPublisher) //
 				.expectNextMatches(customerPredicate) //
 				.expectNextMatches(customerPredicate) //
