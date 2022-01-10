@@ -1,10 +1,10 @@
+
 import org.springframework.cloud.contract.spec.Contract
-import org.springframework.cloud.contract.spec.internal.HttpMethods
 
 Contract.make {
     // <1>
     request {
-        method HttpMethods.HttpMethod.GET
+        method "GET"
         url "/customers"
 
     }

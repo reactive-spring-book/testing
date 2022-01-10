@@ -1,46 +1,53 @@
 package rsb.testing.producer;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.reactivestreams.Publisher;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.util.function.Predicate;
 
-@RunWith(SpringRunner.class) // <1>
+@Testcontainers
 @DataMongoTest // <2>
 public class CustomerRepositoryTest {
 
-	// <3>
-	@Autowired
-	private CustomerRepository customerRepository;
 
-	// <4>
-	@Test
-	public void findByName() {
-		String commonName = "Jane";
-		Customer one = new Customer("1", commonName);
-		Customer two = new Customer("2", "John");
-		Customer three = new Customer("3", commonName);
+    @Container
+    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.3");
 
-		Publisher<Customer> setup = this.customerRepository //
-				.deleteAll() //
-				.thenMany(this.customerRepository.saveAll(Flux.just(one, two, three))) //
-				.thenMany(this.customerRepository.findByName(commonName));
+    @DynamicPropertySource
+    static void setProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+    }
 
-		Predicate<Customer> customerPredicate = customer -> // <5>
-		commonName.equalsIgnoreCase(customer.getName());
+    // <3>
+    @Autowired
+    private CustomerRepository customerRepository;
 
-		StepVerifier // <6>
-				.create(setup) //
-				.expectNextMatches(customerPredicate) //
-				.expectNextMatches(customerPredicate) //
-				.verifyComplete();
+    // <4>
+    @Test
+    public void findByName() {
+        var commonName = "Jane";
+        var one = new Customer("1", commonName);
+        var two = new Customer("2", "John");
+        var three = new Customer("3", commonName);
+        var setupPublisher = this.customerRepository //
+                .deleteAll() //
+                .thenMany(this.customerRepository.saveAll(Flux.just(one, two, three))) //
+                .thenMany(this.customerRepository.findByName(commonName));
+        var customerPredicate = (Predicate<Customer>) customer -> commonName.equalsIgnoreCase(customer.name());// <5>
+        StepVerifier // <6>
+                .create(setupPublisher) //
+                .expectNextMatches(customerPredicate) //
+                .expectNextMatches(customerPredicate) //
+                .verifyComplete();
 
-	}
+    }
 
 }

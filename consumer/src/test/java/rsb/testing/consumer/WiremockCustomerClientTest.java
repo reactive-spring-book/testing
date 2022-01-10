@@ -1,60 +1,59 @@
 package rsb.testing.consumer;
 
 import com.github.tomakehurst.wiremock.client.WireMock;
-import lombok.extern.log4j.Log4j2;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
-import org.springframework.test.context.junit4.SpringRunner;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
-@RunWith(SpringRunner.class)
+
 @Import(ConsumerApplication.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // <1>
 @AutoConfigureWireMock(port = 0) // <2>
 public class WiremockCustomerClientTest {
 
-	// <3>
-	@Autowired
-	private CustomerClient client;
+    // <3>
+    @Autowired
+    private CustomerClient client;
 
-	@Autowired
-	private Environment environment;
+    @Autowired
+    private Environment environment;
 
-	@Before
-	public void setupWireMock() {
+    @BeforeEach
+    public void setupWireMock() {
+        var wiremockServerPort = this.environment.getProperty("wiremock.server.port", Integer.class);
+        var base = String.format("%s:%s", "localhost", wiremockServerPort);
+        this.client.setBase(base);
+        var json =
+                """
+                    [
+                        { "id":"1", "name":"Jane"}, 
+                        { "id":"2", "name":"John" }
+                    ] 
+                """;
+        // <4>
+        WireMock.stubFor( //
+                WireMock.get("/customers") //
+                        .willReturn(WireMock.aResponse() //
+                                .withHeader(CONTENT_TYPE, APPLICATION_JSON_UTF8_VALUE) //
+                                .withBody(json)));
+    }
 
-		String base = String.format("%s:%s", "localhost",
-				this.environment.getProperty("wiremock.server.port", Integer.class));
-		this.client.setBase(base);
-
-		String json = "[{ \"id\":\"1\", \"name\":\"Jane\"},"
-				+ "{ \"id\":\"2\", \"name\":\"John\"}]";
-
-		// <4>
-		WireMock.stubFor( //
-				WireMock.get("/customers") //
-						.willReturn(WireMock.aResponse() //
-								.withHeader(CONTENT_TYPE, APPLICATION_JSON_UTF8_VALUE) //
-								.withBody(json)));
-	}
-
-	@Test
-	public void getAllCustomers() {
-		Flux<Customer> customers = this.client.getAllCustomers();
-		StepVerifier.create(customers) //
-				.expectNext(new Customer("1", "Jane")) //
-				.expectNext(new Customer("2", "John")) //
-				.verifyComplete();
-	}
+    @Test
+    public void getAllCustomers() {
+        var customers = this.client.getAllCustomers();
+        StepVerifier.create(customers) //
+                .expectNext(new Customer("1", "Jane")) //
+                .expectNext(new Customer("2", "John")) //
+                .verifyComplete();
+    }
 
 }

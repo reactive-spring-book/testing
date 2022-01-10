@@ -10,15 +10,23 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.reactive.function.server.RouterFunction;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
 
 // <1>
-@RunWith(SpringRunner.class)
+
 // <2>
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "server.port=0")
 public class BaseClass {
+
+
+
 
 	// <3>
 	@LocalServerPort
@@ -39,17 +47,13 @@ public class BaseClass {
 				Flux.just(new Customer("1", "Jane"), new Customer("2", "John")));
 
 		// <6>
-		RestAssuredWebTestClient.standaloneSetup(this.routerFunctions);
+		RestAssuredWebTestClient.standaloneSetup( this.routerFunctions);
 	}
 
 	// <7>
 	@Configuration
 	@Import(ProducerApplication.class)
 	public static class TestConfiguration {
-
 	}
-
-	// RestAssuredWebTestClient.standaloneSetup(new ProducerController(personToCheck ->
-	// personToCheck.age >= 20));
 
 }
