@@ -14,7 +14,7 @@ import reactor.test.StepVerifier;
 import java.util.function.Predicate;
 
 @Testcontainers
-@DataMongoTest // <2>
+@DataMongoTest // <1>
 public class CustomerRepositoryTest {
 
 	@Container
@@ -25,11 +25,11 @@ public class CustomerRepositoryTest {
 		registry.add("spring.data.mongodb.uri", mongoDbContainer::getReplicaSetUrl);
 	}
 
-	// <3>
+	// <2>
 	@Autowired
 	private CustomerRepository customerRepository;
 
-	// <4>
+	// <3>
 	@Test
 	public void findByName() {
 		var commonName = "Jane";
