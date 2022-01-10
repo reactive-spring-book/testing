@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 public class CustomerRepositoryTest {
 
 	@Container
-	static MongoDBContainer mongoDbContainer = new MongoDBContainer("mongo:5.0.5");
+	static MongoDBContainer mongoDbContainer = new MongoDBContainer("mongo:5.0.3");
 
 	@DynamicPropertySource
 	static void setProperties(DynamicPropertyRegistry registry) {
@@ -31,7 +31,7 @@ public class CustomerRepositoryTest {
 
 	// <4>
 	@Test
-	public void doFind() {
+	public void findByName() {
 		var commonName = "Jane";
 		var one = new Customer("1", commonName);
 		var two = new Customer("2", "John");

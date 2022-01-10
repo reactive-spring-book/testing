@@ -3,6 +3,7 @@ package rsb.testing.producer;
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,6 @@ import reactor.core.publisher.Flux;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "server.port=0")
 public class BaseClass {
 
-	@Container
-	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.5");
-
-	@DynamicPropertySource
-	static void setProperties(DynamicPropertyRegistry registry) {
-		registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-	}
-
 	// <3>
 	@LocalServerPort
 	private int port;
@@ -44,7 +37,7 @@ public class BaseClass {
 	@Autowired
 	private RouterFunction<?>[] routerFunctions;
 
-	@Before
+	@BeforeEach
 	public void before() throws Exception {
 		log.info("the embedded test web server is available on port " + this.port);
 
