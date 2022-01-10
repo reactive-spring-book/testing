@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 public class CustomerRepositoryTest {
 
 	@Container
-	static MongoDBContainer mongoDbContainer = new MongoDBContainer("mongo:5.0.3");
+	static MongoDBContainer mongoDbContainer = new MongoDBContainer("mongo:5.0.5");
 
 	@DynamicPropertySource
 	static void setProperties(DynamicPropertyRegistry registry) {
