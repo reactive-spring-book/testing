@@ -19,30 +19,6 @@
         <module>producer</module>
         <module>consumer</module>
     </modules>
-
-    <dependencies>
-
-<!--
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured-common</artifactId>
-            <version>4.3.3</version>
-        </dependency>
--->
-
-<!--        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>5.9.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna-platform</artifactId>
-            <version>${jna.version}</version>
-            <scope>test</scope>
-        </dependency>-->
-    </dependencies>
     <build>
         <plugins>
             <plugin>
