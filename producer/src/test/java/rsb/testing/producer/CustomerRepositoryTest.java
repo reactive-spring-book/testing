@@ -17,37 +17,36 @@ import java.util.function.Predicate;
 @DataMongoTest // <2>
 public class CustomerRepositoryTest {
 
+	@Container
+	static MongoDBContainer mongoDbContainer = new MongoDBContainer("mongo:5.0.5");
 
-    @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.3");
+	@DynamicPropertySource
+	static void setProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.data.mongodb.uri", mongoDbContainer::getReplicaSetUrl);
+	}
 
-    @DynamicPropertySource
-    static void setProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
-    }
+	// <3>
+	@Autowired
+	private CustomerRepository customerRepository;
 
-    // <3>
-    @Autowired
-    private CustomerRepository customerRepository;
+	// <4>
+	@Test
+	public void doFind() {
+		var commonName = "Jane";
+		var one = new Customer("1", commonName);
+		var two = new Customer("2", "John");
+		var three = new Customer("3", commonName);
+		var setupPublisher = this.customerRepository //
+				.deleteAll() //
+				.thenMany(this.customerRepository.saveAll(Flux.just(one, two, three))) //
+				.thenMany(this.customerRepository.findByName(commonName));
+		var customerPredicate = (Predicate<Customer>) customer -> commonName.equalsIgnoreCase(customer.name());// <5>
+		StepVerifier // <6>
+				.create(setupPublisher) //
+				.expectNextMatches(customerPredicate) //
+				.expectNextMatches(customerPredicate) //
+				.verifyComplete();
 
-    // <4>
-    @Test
-    public void findByName() {
-        var commonName = "Jane";
-        var one = new Customer("1", commonName);
-        var two = new Customer("2", "John");
-        var three = new Customer("3", commonName);
-        var setupPublisher = this.customerRepository //
-                .deleteAll() //
-                .thenMany(this.customerRepository.saveAll(Flux.just(one, two, three))) //
-                .thenMany(this.customerRepository.findByName(commonName));
-        var customerPredicate = (Predicate<Customer>) customer -> commonName.equalsIgnoreCase(customer.name());// <5>
-        StepVerifier // <6>
-                .create(setupPublisher) //
-                .expectNextMatches(customerPredicate) //
-                .expectNextMatches(customerPredicate) //
-                .verifyComplete();
-
-    }
+	}
 
 }

@@ -1,6 +1,7 @@
 package rsb.testing.producer;
 
 import io.restassured.module.webtestclient.RestAssuredWebTestClient;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -20,13 +21,17 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import reactor.core.publisher.Flux;
 
 // <1>
-
-// <2>
+@Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = "server.port=0")
 public class BaseClass {
 
+	@Container
+	static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:5.0.5");
 
-
+	@DynamicPropertySource
+	static void setProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+	}
 
 	// <3>
 	@LocalServerPort
@@ -41,19 +46,21 @@ public class BaseClass {
 
 	@Before
 	public void before() throws Exception {
+		log.info("the embedded test web server is available on port " + this.port);
 
 		// <5>
-		Mockito.when(this.customerRepository.findAll()).thenReturn(
-				Flux.just(new Customer("1", "Jane"), new Customer("2", "John")));
+		Mockito.when(this.customerRepository.findAll())
+				.thenReturn(Flux.just(new Customer("1", "Jane"), new Customer("2", "John")));
 
 		// <6>
-		RestAssuredWebTestClient.standaloneSetup( this.routerFunctions);
+		RestAssuredWebTestClient.standaloneSetup(this.routerFunctions);
 	}
 
 	// <7>
 	@Configuration
 	@Import(ProducerApplication.class)
 	public static class TestConfiguration {
+
 	}
 
 }

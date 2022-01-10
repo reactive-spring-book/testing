@@ -24,15 +24,13 @@ public class CustomerWebTest {
 	public void getAll() {
 
 		// <5>
-		Mockito.when(this.repository.findAll())
-				.thenReturn(Flux.just(new Customer("1", "A"), new Customer("2", "B")));
+		Mockito.when(this.repository.findAll()).thenReturn(Flux.just(new Customer("1", "A"), new Customer("2", "B")));
 
 		// <6>
 		this.client.get() //
 				.uri("/customers") //
 				.accept(MediaType.APPLICATION_JSON).exchange() //
-				.expectStatus().isOk().expectHeader()
-				.contentType(MediaType.APPLICATION_JSON) //
+				.expectStatus().isOk().expectHeader().contentType(MediaType.APPLICATION_JSON) //
 				.expectBody() //
 				.jsonPath("$.[0].id").isEqualTo("1") //
 				.jsonPath("$.[0].name").isEqualTo("A") //

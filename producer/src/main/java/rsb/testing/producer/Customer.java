@@ -7,4 +7,5 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 // <1>
-record Customer ( @Id  String id, String name){}
+record Customer(@Id String id, String name) {
+}
