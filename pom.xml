@@ -6,7 +6,7 @@
     <artifactId>testing</artifactId>
     <packaging>pom</packaging>
     <properties>
-        <testcontainers.version>1.15.0</testcontainers.version>
+        <testcontainers.version>1.16.2</testcontainers.version>
         <jna.version>5.9.0</jna.version>
     </properties>
     <parent>
@@ -19,6 +19,18 @@
         <module>producer</module>
         <module>consumer</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>1.16.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
     <build>
         <plugins>
             <plugin>
