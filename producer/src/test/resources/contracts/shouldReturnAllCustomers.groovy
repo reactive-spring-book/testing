@@ -1,7 +1,7 @@
 
 import org.springframework.cloud.contract.spec.Contract
 
-Contract.make {
+Contract.make  {
     // <1>
     request {
         method "GET"
