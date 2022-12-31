@@ -7,12 +7,11 @@
     <parent>
         <groupId>rsb</groupId>
         <artifactId>testing</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
         <relativePath>..</relativePath>
     </parent>
     <properties>
-
-        <spring-web-test-client.version>4.4.0</spring-web-test-client.version>
+        <spring-web-test-client.version>5.3.0</spring-web-test-client.version>
     </properties>
     <dependencies>
         <dependency>
@@ -62,37 +61,17 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+
             <!-- tag::scc-maven-plugin[] -->
-            <!-- <plugin>
-                 <groupId>org.springframework.cloud</groupId>
-                 <artifactId>spring-cloud-contract-maven-plugin</artifactId>
-                 <version>${spring-cloud-contract-maven-plugin.version}</version>
-                 <extensions>true</extensions>
-                 <configuration>
-                     &lt;!&ndash;1&ndash;&gt;
-                     <baseClassForTests>
-                         rsb.testing.producer.BaseClass
-                     </baseClassForTests>
-                     &lt;!&ndash;2&ndash;&gt;
-                     <testMode>WEBTESTCLIENT</testMode>
-                     &lt;!&ndash;                    <testMode>EXPLICIT</testMode>&ndash;&gt;
-                 </configuration>
-             </plugin>-->
             <plugin>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-contract-maven-plugin</artifactId>
-                <version>${spring-cloud-contract-maven-plugin.version}</version>
-                <!--                <version>3.1.0</version>-->
+                <version>4.0.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <baseClassForTests>rsb.testing.producer.BaseClass
-                    </baseClassForTests>
-                    <testMode>WEBTESTCLIENT</testMode>
+                    <baseClassForTests>rsb.testing.producer.BaseClass</baseClassForTests>
                     <testFramework>JUNIT5</testFramework>
+                    <testMode>WEBTESTCLIENT</testMode>
                 </configuration>
             </plugin>
             <!-- end::scc-maven-plugin[] -->

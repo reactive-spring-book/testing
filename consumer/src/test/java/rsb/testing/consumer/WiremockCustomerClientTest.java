@@ -8,11 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
-import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Import(ConsumerApplication.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // <1>
@@ -41,7 +40,7 @@ public class WiremockCustomerClientTest {
 		WireMock.stubFor( //
 				WireMock.get("/customers") //
 						.willReturn(WireMock.aResponse() //
-								.withHeader(CONTENT_TYPE, APPLICATION_JSON_UTF8_VALUE) //
+								.withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE) //
 								.withBody(json)));
 	}
 
